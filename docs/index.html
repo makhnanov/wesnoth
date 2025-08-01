@@ -1,1 +1,262 @@
-<h1>Test Doc Page</h1>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNG Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .animation-container {
+            text-align: center;
+        }
+
+        #animationImage {
+            /*border: 2px solid #333;*/
+            border-radius: 8px;
+            max-width: 400px;
+            height: auto;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .speed-control {
+            margin: 10px 0;
+        }
+
+        input[type="range"] {
+            width: 200px;
+            margin: 0 10px;
+        }
+
+        .frame-info {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="animation-container">
+    <img id="animationImage" src="" alt="Animation Frame">
+
+    <div class="controls">
+        <button id="playBtn">Play</button>
+        <button id="pauseBtn" disabled>Pause</button>
+        <button id="stopBtn">Stop</button>
+        <button id="prevBtn">Previous Frame</button>
+        <button id="nextBtn">Next Frame</button>
+    </div>
+
+    <div class="speed-control">
+        <label>Скорость: </label>
+        <input type="range" id="speedSlider" min="10" max="200" value="100">
+        <span id="speedValue">100ms</span>
+    </div>
+
+    <div class="frame-info">
+        <span>Кадр: <span id="currentFrame">0</span> из <span id="totalFrames">0</span></span>
+    </div>
+</div>
+
+<script>
+    class PNGAnimator {
+        constructor(images, imageElement) {
+            this.images = images;
+            this.imageElement = imageElement;
+            this.currentFrame = 0;
+            this.isPlaying = false;
+            this.animationSpeed = 30; // миллисекунды
+            this.intervalId = null;
+
+            // Предварительная загрузка изображений
+            this.preloadImages();
+
+            // Показать первый кадр
+            this.showFrame(0);
+            this.updateFrameInfo();
+        }
+
+        preloadImages() {
+            this.images.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+        }
+
+        showFrame(frameIndex) {
+            if (frameIndex >= 0 && frameIndex < this.images.length) {
+                this.currentFrame = frameIndex;
+                this.imageElement.src = this.images[frameIndex];
+                this.updateFrameInfo();
+            }
+        }
+
+        play() {
+            if (!this.isPlaying) {
+                this.isPlaying = true;
+                this.intervalId = setInterval(() => {
+                    this.nextFrame();
+                }, this.animationSpeed);
+            }
+        }
+
+        pause() {
+            this.isPlaying = false;
+            if (this.intervalId) {
+                clearInterval(this.intervalId);
+                this.intervalId = null;
+            }
+        }
+
+        stop() {
+            this.pause();
+            this.showFrame(0);
+        }
+
+        nextFrame() {
+            const nextIndex = (this.currentFrame + 1) % this.images.length;
+            this.showFrame(nextIndex);
+        }
+
+        previousFrame() {
+            const prevIndex = this.currentFrame === 0 ?
+                this.images.length - 1 : this.currentFrame - 1;
+            this.showFrame(prevIndex);
+        }
+
+        setSpeed(speed) {
+            this.animationSpeed = speed;
+            if (this.isPlaying) {
+                this.pause();
+                this.play();
+            }
+        }
+
+        updateFrameInfo() {
+            document.getElementById('currentFrame').textContent = this.currentFrame + 1;
+            document.getElementById('totalFrames').textContent = this.images.length;
+        }
+    }
+
+    const images = [
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-1.png',
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-2.png',
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-3.png',
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-4.png',
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-5.png',
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-6.png',
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-7.png',
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-8.png',
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-7.png',
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-6.png',
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-5.png',
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-4.png',
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-3.png',
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-2.png',
+        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-1.png',
+    ];
+
+    // Инициализация анимации
+    const imageElement = document.getElementById('animationImage');
+    const animator = new PNGAnimator(images, imageElement);
+
+    // Обработчики кнопок
+    const playBtn = document.getElementById('playBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const speedSlider = document.getElementById('speedSlider');
+    const speedValue = document.getElementById('speedValue');
+
+    playBtn.addEventListener('click', () => {
+        animator.play();
+        playBtn.disabled = true;
+        pauseBtn.disabled = false;
+    });
+
+    pauseBtn.addEventListener('click', () => {
+        animator.pause();
+        playBtn.disabled = false;
+        pauseBtn.disabled = true;
+    });
+
+    stopBtn.addEventListener('click', () => {
+        animator.stop();
+        playBtn.disabled = false;
+        pauseBtn.disabled = true;
+    });
+
+    prevBtn.addEventListener('click', () => {
+        animator.previousFrame();
+    });
+
+    nextBtn.addEventListener('click', () => {
+        animator.nextFrame();
+    });
+
+    speedSlider.addEventListener('input', (e) => {
+        const speed = e.target.value;
+        animator.setSpeed(speed);
+        speedValue.textContent = speed + 'ms';
+    });
+
+    // Управление с клавиатуры
+    document.addEventListener('keydown', (e) => {
+        switch(e.code) {
+            case 'Space':
+                e.preventDefault();
+                if (animator.isPlaying) {
+                    pauseBtn.click();
+                } else {
+                    playBtn.click();
+                }
+                break;
+            case 'ArrowLeft':
+                e.preventDefault();
+                animator.previousFrame();
+                break;
+            case 'ArrowRight':
+                e.preventDefault();
+                animator.nextFrame();
+                break;
+            case 'Home':
+                e.preventDefault();
+                animator.stop();
+                break;
+        }
+    });
+</script>
+</body>
+</html>
