@@ -1,262 +1,364 @@
-<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+<!doctype html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PNG Animation</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Hex Map with Menu</title>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        html, body {
             margin: 0;
-            background: #f0f0f0;
-            font-family: Arial, sans-serif;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            overflow: hidden;
         }
 
-        .animation-container {
-            text-align: center;
+        #mainCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: black;
+            cursor: grab;
         }
 
-        #animationImage {
-            /*border: 2px solid #333;*/
-            border-radius: 8px;
-            max-width: 400px;
-            height: auto;
+        #mainCanvas.dragging {
+            cursor: grabbing;
         }
 
-        .controls {
-            margin-top: 20px;
-        }
-
-        button {
-            margin: 5px;
-            padding: 10px 15px;
-            background: #007bff;
-            color: white;
+        #menuButton {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            background: none;
             border: none;
-            border-radius: 4px;
+            color: white;
+            font-size: 28px;
             cursor: pointer;
-            font-size: 14px;
+            z-index: 1000;
         }
 
-        button:hover {
-            background: #0056b3;
+        #sideMenu {
+            position: absolute;
+            top: 60px;
+            left: -250px;
+            width: 290px;
+            background: #111;
+            color: white;
+            transition: all 0.6s ease;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 1001;
+            border: 2px solid rgba(245, 222, 179, 0);
+            opacity: 0;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
         }
 
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
+        #sideMenu.open {
+            left: 20px;
+            border: 2px solid wheat;
+            opacity: 1;
         }
 
-        .speed-control {
-            margin: 10px 0;
+        #menuCanvas {
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            z-index: -1;
+            pointer-events: none;
         }
 
-        input[type="range"] {
-            width: 200px;
-            margin: 0 10px;
+        .tile-header {
+            margin-top: 0;
         }
 
-        .frame-info {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #666;
+        .tile-option {
+            position: relative;
+            width: 72px;
+            height: 72px;
+            margin: 0;
+            clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%);
+            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .tile-option.selected {
+            box-shadow: 0 0 0 4px lime;
+            opacity: 1;
+        }
+
+        #zoomIndicator {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: white;
+            font-size: 20px;
+            font-family: sans-serif;
+            opacity: 0;
+            transition: opacity 1s ease;
+            pointer-events: none;
+            z-index: 2000;
         }
     </style>
 </head>
 <body>
-<div class="animation-container">
-    <img id="animationImage" src="" alt="Animation Frame">
-
-    <div class="controls">
-        <button id="playBtn">Play</button>
-        <button id="pauseBtn" disabled>Pause</button>
-        <button id="stopBtn">Stop</button>
-        <button id="prevBtn">Previous Frame</button>
-        <button id="nextBtn">Next Frame</button>
-    </div>
-
-    <div class="speed-control">
-        <label>Скорость: </label>
-        <input type="range" id="speedSlider" min="10" max="200" value="100">
-        <span id="speedValue">100ms</span>
-    </div>
-
-    <div class="frame-info">
-        <span>Кадр: <span id="currentFrame">0</span> из <span id="totalFrames">0</span></span>
-    </div>
+<button id="menuButton">☰</button>
+<div id="sideMenu">
+    <canvas id="menuCanvas"></canvas>
+    <h3 class="tile-header">Tiles:</h3>
+    <img src="https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/flat/road.png" alt="road"
+         id="tile1" class="tile-option">
+    <img src="https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/swamp/water-tile.png" alt="water"
+         id="tile2" class="tile-option">
+    <img src="https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/stone-regular.png" alt="stone"
+         id="tile3" class="tile-option">
 </div>
+<canvas id="mainCanvas"></canvas>
+<div id="zoomIndicator"></div>
 
 <script>
-    class PNGAnimator {
-        constructor(images, imageElement) {
-            this.images = images;
-            this.imageElement = imageElement;
-            this.currentFrame = 0;
-            this.isPlaying = false;
-            this.animationSpeed = 30; // миллисекунды
-            this.intervalId = null;
+    const mainCanvas = document.getElementById('mainCanvas');
+    const mainCtx = mainCanvas.getContext('2d');
 
-            // Предварительная загрузка изображений
-            this.preloadImages();
+    const menuCanvas = document.getElementById('menuCanvas');
+    const menuCtx = menuCanvas.getContext('2d');
 
-            // Показать первый кадр
-            this.showFrame(0);
-            this.updateFrameInfo();
-        }
+    const menuButton = document.getElementById('menuButton');
+    const sideMenu = document.getElementById('sideMenu');
 
-        preloadImages() {
-            this.images.forEach(src => {
-                const img = new Image();
-                img.src = src;
-            });
-        }
+    let scale = 1.0;
+    let offsetX = 0;
+    let offsetY = 0;
 
-        showFrame(frameIndex) {
-            if (frameIndex >= 0 && frameIndex < this.images.length) {
-                this.currentFrame = frameIndex;
-                this.imageElement.src = this.images[frameIndex];
-                this.updateFrameInfo();
+    let dragging = false;
+    let lastMouse = {x: 0, y: 0};
+    let spacePressed = false;
+    let selectedTile = null;
+    let placedTiles = {};
+
+    function resizeCanvas() {
+        const dpr = window.devicePixelRatio || 1;
+        mainCanvas.width = window.innerWidth * dpr;
+        mainCanvas.height = window.innerHeight * dpr;
+        mainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const rect = sideMenu.getBoundingClientRect();
+        menuCanvas.width = rect.width * dpr;
+        menuCanvas.height = rect.height * dpr;
+        menuCanvas.style.width = rect.width + 'px';
+        menuCanvas.style.height = rect.height + 'px';
+        menuCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        draw();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+
+
+    menuButton.addEventListener('click', () => {
+        sideMenu.classList.toggle('open');
+        resizeCanvas();
+    });
+
+    const tiles = document.querySelectorAll('.tile-option');
+    tiles.forEach(tile => {
+        tile.addEventListener('click', () => {
+            tiles.forEach(t => t.classList.remove('selected'));
+            tile.classList.add('selected');
+            selectedTile = tile;
+            draw();
+        });
+    });
+
+    function drawHexAt(ctx, cx, cy, size) {
+        const pts = [
+            [0.25, 0.067],
+            [0.75, 0.067],
+            [1, 0.5],
+            [0.75, 0.933],
+            [0.25, 0.933],
+            [0, 0.5]
+        ];
+        const half = size / 2;
+        const left = cx - half;
+        const top = cy - half;
+        ctx.beginPath();
+        pts.forEach((p, i) => {
+            const x = left + p[0] * size;
+            const y = top + p[1] * size;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.closePath();
+    }
+
+    function draw() {
+        mainCtx.fillStyle = 'black';
+        mainCtx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+
+        const baseSize = 72;
+        const size = baseSize * scale;
+        const dx = size * 0.75;
+        const dy = size * 0.866;
+
+        const cols = Math.ceil(mainCanvas.width / dx) + 4;
+        const rows = Math.ceil(mainCanvas.height / dy) + 4;
+
+        const startCol = Math.floor(-offsetX / dx) - 2;
+        const startRow = Math.floor(-offsetY / dy) - 2;
+
+        for (let row = startRow; row < startRow + rows; row++) {
+            for (let col = startCol; col < startCol + cols; col++) {
+                const cx = offsetX + col * dx + size / 2;
+                const cy = offsetY + row * dy + size / 2 + (col % 2 ? dy / 2 : 0);
+
+                drawHexAt(mainCtx, cx, cy, size);
+
+                const key = row + ',' + col;
+                if (placedTiles[key]) {
+                    mainCtx.save();
+                    mainCtx.clip();
+                    mainCtx.drawImage(placedTiles[key], cx - size / 2, cy - size / 2, size, size);
+                    mainCtx.restore();
+                }
+
+                mainCtx.lineWidth = 0.15;
+                mainCtx.strokeStyle = 'gray';
+                mainCtx.stroke();
             }
         }
 
-        play() {
-            if (!this.isPlaying) {
-                this.isPlaying = true;
-                this.intervalId = setInterval(() => {
-                    this.nextFrame();
-                }, this.animationSpeed);
-            }
-        }
 
-        pause() {
-            this.isPlaying = false;
-            if (this.intervalId) {
-                clearInterval(this.intervalId);
-                this.intervalId = null;
-            }
-        }
-
-        stop() {
-            this.pause();
-            this.showFrame(0);
-        }
-
-        nextFrame() {
-            const nextIndex = (this.currentFrame + 1) % this.images.length;
-            this.showFrame(nextIndex);
-        }
-
-        previousFrame() {
-            const prevIndex = this.currentFrame === 0 ?
-                this.images.length - 1 : this.currentFrame - 1;
-            this.showFrame(prevIndex);
-        }
-
-        setSpeed(speed) {
-            this.animationSpeed = speed;
-            if (this.isPlaying) {
-                this.pause();
-                this.play();
-            }
-        }
-
-        updateFrameInfo() {
-            document.getElementById('currentFrame').textContent = this.currentFrame + 1;
-            document.getElementById('totalFrames').textContent = this.images.length;
+        menuCtx.clearRect(0, 0, menuCanvas.width, menuCanvas.height);
+        if (selectedTile) {
+            const rect = selectedTile.getBoundingClientRect();
+            const menuRect = sideMenu.getBoundingClientRect();
+            const tileCx = rect.left - menuRect.left + rect.width / 2;
+            const tileCy = rect.top - menuRect.top + rect.height / 2;
+            drawHexAt(menuCtx, tileCx, tileCy, baseSize); // размер в меню фиксированный
+            menuCtx.lineWidth = 4;
+            menuCtx.strokeStyle = 'lime';
+            menuCtx.stroke();
         }
     }
 
-    const images = [
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-1.png',
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-2.png',
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-3.png',
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-4.png',
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-5.png',
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-6.png',
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-7.png',
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-8.png',
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-7.png',
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-6.png',
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-5.png',
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-4.png',
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-3.png',
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-2.png',
-        'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/units/orcs/grunt-ne-die-1.png',
-    ];
+    // placing tiles
+    mainCanvas.addEventListener('click', (e) => {
+        if (spacePressed) return; // не красим если двигаем карту
 
-    // Инициализация анимации
-    const imageElement = document.getElementById('animationImage');
-    const animator = new PNGAnimator(images, imageElement);
+        const rect = mainCanvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
-    // Обработчики кнопок
-    const playBtn = document.getElementById('playBtn');
-    const pauseBtn = document.getElementById('pauseBtn');
-    const stopBtn = document.getElementById('stopBtn');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const speedSlider = document.getElementById('speedSlider');
-    const speedValue = document.getElementById('speedValue');
+        const baseSize = 72;
+        const size = baseSize * scale;
+        const dx = size * 0.75;
+        const dy = size * 0.866;
 
-    playBtn.addEventListener('click', () => {
-        animator.play();
-        playBtn.disabled = true;
-        pauseBtn.disabled = false;
-    });
+        const cols = Math.ceil(mainCanvas.width / dx) + 4;
+        const rows = Math.ceil(mainCanvas.height / dy) + 4;
+        const startCol = Math.floor(-offsetX / dx) - 2;
+        const startRow = Math.floor(-offsetY / dy) - 2;
 
-    pauseBtn.addEventListener('click', () => {
-        animator.pause();
-        playBtn.disabled = false;
-        pauseBtn.disabled = true;
-    });
+        for (let row = startRow; row < startRow + rows; row++) {
+            for (let col = startCol; col < startCol + cols; col++) {
+                const cx = offsetX + col * dx + size / 2;
+                const cy = offsetY + row * dy + size / 2 + (col % 2 ? dy / 2 : 0);
 
-    stopBtn.addEventListener('click', () => {
-        animator.stop();
-        playBtn.disabled = false;
-        pauseBtn.disabled = true;
-    });
-
-    prevBtn.addEventListener('click', () => {
-        animator.previousFrame();
-    });
-
-    nextBtn.addEventListener('click', () => {
-        animator.nextFrame();
-    });
-
-    speedSlider.addEventListener('input', (e) => {
-        const speed = e.target.value;
-        animator.setSpeed(speed);
-        speedValue.textContent = speed + 'ms';
-    });
-
-    // Управление с клавиатуры
-    document.addEventListener('keydown', (e) => {
-        switch(e.code) {
-            case 'Space':
-                e.preventDefault();
-                if (animator.isPlaying) {
-                    pauseBtn.click();
-                } else {
-                    playBtn.click();
+                drawHexAt(mainCtx, cx, cy, size);
+                if (mainCtx.isPointInPath(x, y)) {
+                    const key = row + ',' + col;
+                    // if(placedTiles[key]) delete placedTiles[key];
+                    // else
+                    console.log(key)
+                    if (selectedTile) {
+                        placedTiles[key] = selectedTile;
+                    }
+                    draw();
+                    return;
                 }
-                break;
-            case 'ArrowLeft':
-                e.preventDefault();
-                animator.previousFrame();
-                break;
-            case 'ArrowRight':
-                e.preventDefault();
-                animator.nextFrame();
-                break;
-            case 'Home':
-                e.preventDefault();
-                animator.stop();
-                break;
+            }
         }
     });
+
+    // перемещение карты с пробелом
+    mainCanvas.addEventListener('mousedown', (e) => {
+        if (spacePressed) {
+            dragging = true;
+            lastMouse.x = e.clientX;
+            lastMouse.y = e.clientY;
+            mainCanvas.classList.add('dragging');
+        }
+    });
+    mainCanvas.addEventListener('mouseup', () => {
+        dragging = false;
+        mainCanvas.classList.remove('dragging');
+    });
+    mainCanvas.addEventListener('mouseleave', () => {
+        dragging = false;
+        mainCanvas.classList.remove('dragging');
+    });
+    mainCanvas.addEventListener('mousemove', (e) => {
+        if (dragging) {
+            const dx = e.clientX - lastMouse.x;
+            const dy = e.clientY - lastMouse.y;
+            offsetX += dx;
+            offsetY += dy;
+            lastMouse.x = e.clientX;
+            lastMouse.y = e.clientY;
+            draw();
+        }
+    });
+
+    window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') spacePressed = true;
+    });
+    window.addEventListener('keyup', (e) => {
+        if (e.code === 'Space') {
+            spacePressed = false;
+            dragging = false;
+            mainCanvas.classList.remove('dragging');
+        }
+    });
+
+    // масштабирование колесиком
+    let zoomTimeout = null;
+    const zoomIndicator = document.getElementById('zoomIndicator');
+
+    function showZoomIndicator() {
+        const percent = Math.round(scale * 100);
+        zoomIndicator.textContent = percent + '%';
+        zoomIndicator.style.opacity = "1";
+        if (zoomTimeout) clearTimeout(zoomTimeout);
+        zoomTimeout = setTimeout(() => {
+            zoomIndicator.style.opacity = "0";
+        }, 2000);
+    }
+
+    mainCanvas.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        if (e.deltaY < 0) scale *= 1.1; else scale /= 1.1;
+        scale = Math.min(Math.max(scale, 0.3), 3.0);
+        draw();
+        showZoomIndicator();
+    }, {passive: false});
+
+    draw();
 </script>
 </body>
 </html>
