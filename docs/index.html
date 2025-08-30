@@ -170,9 +170,16 @@
     const tiles = document.querySelectorAll('.tile-option');
     tiles.forEach(tile => {
         tile.addEventListener('click', () => {
-            tiles.forEach(t => t.classList.remove('selected'));
-            tile.classList.add('selected');
-            selectedTile = tile;
+            if (selectedTile === tile) {
+                // Deselect if clicking the already selected tile
+                tiles.forEach(t => t.classList.remove('selected'));
+                selectedTile = null;
+            } else {
+                // Select the new tile
+                tiles.forEach(t => t.classList.remove('selected'));
+                tile.classList.add('selected');
+                selectedTile = tile;
+            }
             draw();
         });
     });
