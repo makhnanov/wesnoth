@@ -1,12 +1,3 @@
-
-
-
-
-
-
-
-
-
 <!doctype html>
 <html lang="ru">
 <head>
@@ -298,7 +289,8 @@
 
     // перемещение карты с пробелом
     mainCanvas.addEventListener('mousedown', (e) => {
-        if (spacePressed) {
+        if (spacePressed || e.button === 1) {
+            e.preventDefault(); // чтобы не скроллилась страница
             dragging = true;
             lastMouse.x = e.clientX;
             lastMouse.y = e.clientY;
