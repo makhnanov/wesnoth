@@ -141,6 +141,8 @@
     let selectedTile = null;
     let placedTiles = {};
 
+    let spacePressed = false;
+
     function resizeCanvas() {
         const dpr = window.devicePixelRatio || 1;
         mainCanvas.width = window.innerWidth * dpr;
@@ -278,11 +280,35 @@
         }
     }
 
+    // обработка пробела
+    window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && !spacePressed) {
+            spacePressed = true;
+            mainCanvas.classList.add('dragging');
+            e.preventDefault();
+        }
+    });
+
+    window.addEventListener('keyup', (e) => {
+        if (e.code === 'Space') {
+            spacePressed = false;
+            dragging = false;
+            mainCanvas.classList.remove('dragging');
+        }
+    });
+
     // события мыши
     mainCanvas.addEventListener('mousedown', (e) => {
         if (e.button === 0) {
-            painting = true;
-            paintTileAt(e.clientX, e.clientY);
+            if (spacePressed) {
+                dragging = true;
+                lastMouse.x = e.clientX;
+                lastMouse.y = e.clientY;
+                mainCanvas.classList.add('dragging');
+            } else {
+                painting = true;
+                paintTileAt(e.clientX, e.clientY);
+            }
         } else if (e.button === 1) {
             e.preventDefault();
             dragging = true;
@@ -293,7 +319,15 @@
     });
 
     mainCanvas.addEventListener('mouseup', (e) => {
-        if (e.button === 0) painting = false;
+        if (e.button === 0) {
+            if (spacePressed) {
+                // прекращаем перемещение при отпускании ЛКМ с пробелом
+                dragging = false;
+                mainCanvas.classList.remove('dragging');
+            } else {
+                painting = false;
+            }
+        }
         if (e.button === 1) {
             dragging = false;
             mainCanvas.classList.remove('dragging');
@@ -301,7 +335,7 @@
     });
 
     mainCanvas.addEventListener('mouseleave', () => {
-        painting = false;
+        if (!spacePressed) painting = false;
         dragging = false;
         mainCanvas.classList.remove('dragging');
     });
@@ -319,7 +353,7 @@
         }
     });
 
-    // масштабирование колесиком — теперь шаг 1%
+    // масштабирование колесиком
     let zoomTimeout = null;
     const zoomIndicator = document.getElementById('zoomIndicator');
 
@@ -336,32 +370,26 @@
     mainCanvas.addEventListener('wheel', (e) => {
         e.preventDefault();
 
-        // координаты курсора в системе canvas
         const rect = mainCanvas.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
 
-        // мировые координаты до изменения масштаба
         const worldXBefore = (mouseX - offsetX) / scale;
         const worldYBefore = (mouseY - offsetY) / scale;
 
-        // применяем масштаб
         const zoomFactor = e.deltaY < 0 ? 1.01 : 0.99;
         scale *= zoomFactor;
         scale = Math.min(Math.max(scale, 0.3), 3.0);
 
-        // мировые координаты после изменения масштаба
         const worldXAfter = (mouseX - offsetX) / scale;
         const worldYAfter = (mouseY - offsetY) / scale;
 
-        // сдвигаем так, чтобы курсор "смотрел" на ту же точку
         offsetX += (worldXAfter - worldXBefore) * scale;
         offsetY += (worldYAfter - worldYBefore) * scale;
 
         draw();
         showZoomIndicator();
     }, {passive: false});
-
 
     draw();
 </script>
