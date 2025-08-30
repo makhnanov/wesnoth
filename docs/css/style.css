@@ -42,6 +42,12 @@
     border-bottom-right-radius: 20px;
     overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+#sideMenu::-webkit-scrollbar {
+    display: none;
 }
 
 #sideMenu.open {
