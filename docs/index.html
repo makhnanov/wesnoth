@@ -143,6 +143,46 @@
 
     let spacePressed = false;
 
+    // History system for undo functionality
+    let history = [];
+    const MAX_HISTORY = 100;
+
+    function saveState() {
+        // Create a serializable copy by storing tile IDs
+        const stateCopy = {};
+        for (let key in placedTiles) {
+            if (placedTiles[key] && placedTiles[key].id) {
+                stateCopy[key] = placedTiles[key].id;
+            }
+        }
+        
+        const state = JSON.stringify(stateCopy);
+        history.push(state);
+        
+        // Limit history to MAX_HISTORY entries
+        if (history.length > MAX_HISTORY) {
+            history.shift();
+        }
+    }
+
+    function undo() {
+        if (history.length > 0) {
+            const lastState = history.pop();
+            const stateData = JSON.parse(lastState);
+            
+            // Clear current tiles and restore from state
+            placedTiles = {};
+            for (let key in stateData) {
+                const tileElement = document.getElementById(stateData[key]);
+                if (tileElement) {
+                    placedTiles[key] = tileElement;
+                }
+            }
+            
+            draw();
+        }
+    }
+
     function resizeCanvas() {
         const dpr = window.devicePixelRatio || 1;
         mainCanvas.width = window.innerWidth * dpr;
@@ -279,16 +319,29 @@
                 drawHexAt(mainCtx, cx, cy, size);
                 if (mainCtx.isPointInPath(x, y)) {
                     const key = row + ',' + col;
-                    placedTiles[key] = selectedTile;
-                    draw();
+                    
+                    // Only save state and update if the tile is actually changing
+                    if (placedTiles[key] !== selectedTile) {
+                        saveState();
+                        placedTiles[key] = selectedTile;
+                        draw();
+                    }
                     return;
                 }
             }
         }
     }
 
-    // обработка пробела
+    // обработка клавиш
     window.addEventListener('keydown', (e) => {
+        // Undo with Ctrl+Z
+        if (e.ctrlKey && e.code === 'KeyZ') {
+            e.preventDefault();
+            undo();
+            return;
+        }
+        
+        // Space for dragging
         if (e.code === 'Space' && !spacePressed) {
             spacePressed = true;
             mainCanvas.classList.add('dragging');
