@@ -136,8 +136,8 @@
     let offsetY = 0;
 
     let dragging = false;
+    let painting = false;
     let lastMouse = {x: 0, y: 0};
-    let spacePressed = false;
     let selectedTile = null;
     let placedTiles = {};
 
@@ -159,8 +159,6 @@
 
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
-
-
 
     menuButton.addEventListener('click', () => {
         sideMenu.classList.toggle('open');
@@ -234,27 +232,25 @@
             }
         }
 
-
         menuCtx.clearRect(0, 0, menuCanvas.width, menuCanvas.height);
         if (selectedTile) {
             const rect = selectedTile.getBoundingClientRect();
             const menuRect = sideMenu.getBoundingClientRect();
             const tileCx = rect.left - menuRect.left + rect.width / 2;
             const tileCy = rect.top - menuRect.top + rect.height / 2;
-            drawHexAt(menuCtx, tileCx, tileCy, baseSize); // размер в меню фиксированный
+            drawHexAt(menuCtx, tileCx, tileCy, baseSize);
             menuCtx.lineWidth = 4;
             menuCtx.strokeStyle = 'lime';
             menuCtx.stroke();
         }
     }
 
-    // placing tiles
-    mainCanvas.addEventListener('click', (e) => {
-        if (spacePressed) return; // не красим если двигаем карту
+    function paintTileAt(clientX, clientY) {
+        if (!selectedTile) return;
 
         const rect = mainCanvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
 
         const baseSize = 72;
         const size = baseSize * scale;
@@ -274,38 +270,44 @@
                 drawHexAt(mainCtx, cx, cy, size);
                 if (mainCtx.isPointInPath(x, y)) {
                     const key = row + ',' + col;
-                    // if(placedTiles[key]) delete placedTiles[key];
-                    // else
-                    console.log(key)
-                    if (selectedTile) {
-                        placedTiles[key] = selectedTile;
-                    }
+                    placedTiles[key] = selectedTile;
                     draw();
                     return;
                 }
             }
         }
-    });
+    }
 
-    // перемещение карты с пробелом
+    // события мыши
     mainCanvas.addEventListener('mousedown', (e) => {
-        if (spacePressed || e.button === 1) {
-            e.preventDefault(); // чтобы не скроллилась страница
+        if (e.button === 0) {
+            painting = true;
+            paintTileAt(e.clientX, e.clientY);
+        } else if (e.button === 1) {
+            e.preventDefault();
             dragging = true;
             lastMouse.x = e.clientX;
             lastMouse.y = e.clientY;
             mainCanvas.classList.add('dragging');
         }
     });
-    mainCanvas.addEventListener('mouseup', () => {
-        dragging = false;
-        mainCanvas.classList.remove('dragging');
+
+    mainCanvas.addEventListener('mouseup', (e) => {
+        if (e.button === 0) painting = false;
+        if (e.button === 1) {
+            dragging = false;
+            mainCanvas.classList.remove('dragging');
+        }
     });
+
     mainCanvas.addEventListener('mouseleave', () => {
+        painting = false;
         dragging = false;
         mainCanvas.classList.remove('dragging');
     });
+
     mainCanvas.addEventListener('mousemove', (e) => {
+        if (painting) paintTileAt(e.clientX, e.clientY);
         if (dragging) {
             const dx = e.clientX - lastMouse.x;
             const dy = e.clientY - lastMouse.y;
@@ -317,18 +319,7 @@
         }
     });
 
-    window.addEventListener('keydown', (e) => {
-        if (e.code === 'Space') spacePressed = true;
-    });
-    window.addEventListener('keyup', (e) => {
-        if (e.code === 'Space') {
-            spacePressed = false;
-            dragging = false;
-            mainCanvas.classList.remove('dragging');
-        }
-    });
-
-    // масштабирование колесиком
+    // масштабирование колесиком — теперь шаг 1%
     let zoomTimeout = null;
     const zoomIndicator = document.getElementById('zoomIndicator');
 
@@ -344,7 +335,8 @@
 
     mainCanvas.addEventListener('wheel', (e) => {
         e.preventDefault();
-        if (e.deltaY < 0) scale *= 1.1; else scale /= 1.1;
+        if (e.deltaY < 0) scale *= 1.01;
+        else scale /= 1.01;
         scale = Math.min(Math.max(scale, 0.3), 3.0);
         draw();
         showZoomIndicator();
