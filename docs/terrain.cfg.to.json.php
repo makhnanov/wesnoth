@@ -15,16 +15,22 @@ foreach ($lines as $number => $line) {
 
 //    if ($line === '[terrain_type]') {
     if (Str::startsWith($line, $symbolImages = '    name= _ ')) {
-        echo substr($line, strlen($symbolImages)) . PHP_EOL;
+//        echo substr($line, strlen($symbolImages)) . PHP_EOL;
     }
     if (Str::startsWith($line, $symbolImages = '    symbol_image=')) {
-        echo '/var/www/wesnoth/data/core/images/terrain/' . substr($line, strlen($symbolImages)) . '.png' . PHP_EOL;
+        echo 'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/'
+            . substr($line, strlen($symbolImages)) . '.png' . PHP_EOL;
+//        echo '/var/www/wesnoth/data/core/images/terrain/' . substr($line, strlen($symbolImages)) . '.png' . PHP_EOL;
     }
     if (Str::startsWith($line, $symbolImages = '    editor_image=')) {
-        echo '/var/www/wesnoth/data/core/images/terrain/' . substr($line, strlen($symbolImages)) . '.png' . PHP_EOL;
+        echo 'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/'
+            . substr($line, strlen($symbolImages)) . '.png' . PHP_EOL;
+//        echo '/var/www/wesnoth/data/core/images/terrain/' . substr($line, strlen($symbolImages)) . '.png' . PHP_EOL;
     }
     if (Str::startsWith($line, $symbolImages = '    icon_image=')) {
-        echo '/var/www/wesnoth/data/core/images/terrain/' . substr($line, strlen($symbolImages)) . '.png' . PHP_EOL;
+        echo 'https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/'
+            . substr($line, strlen($symbolImages)) . '.png' . PHP_EOL;
+//        echo '/var/www/wesnoth/data/core/images/terrain/' . substr($line, strlen($symbolImages)) . '.png' . PHP_EOL;
     }
 //    }
 }

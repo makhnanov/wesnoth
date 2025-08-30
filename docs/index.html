@@ -21,43 +21,371 @@
 <script>
     // Tile configuration data
     const tilesData = [
-        {
-            id: "tile1",
-            src: "https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/flat/road.png",
-            alt: "road",
-            name: "Road"
-        },
-        {
-            id: "tile2", 
-            src: "https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/swamp/water-tile.png",
-            alt: "water",
-            name: "Water"
-        },
-        {
-            id: "tile3",
-            src: "https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/stone-regular.png",
-            alt: "stone", 
-            name: "Stone"
-        },
-        {
-            id: "tile4",
-            src: "https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/ocean-tile.png",
-            alt: "water-ocean",
-            name: "Water Ocean"
-        },
-        {
-            id: "tile4",
-            src: "https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/coast-tile.png",
-            alt: "water-ocean",
-            name: "Water Ocean"
-        },
-        {
-            id: "tile5",
-            src: "https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/reef-tile.png",
-            alt: "water",
-            name: "Water Reef"
-        },
-    ];
+    #    ## Water ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/ocean-grey-tile.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/ocean-tile.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/ocean-tropical-tile.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/coast-grey-tile.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/coast-tile.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/coast-tropical-tile.png
+                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/ford-tile.png
+                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/reef-gray-tile.png
+                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/reef-tile.png
+                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/reef-tropical-tile.png
+                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/seaweed/kelp-tile.png
+                                                #    ## Swamp ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/swamp/water-tile.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/swamp/mud-tile.png
+            #    ## Flat ##
+    #    ## Grass ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/grass/green-symbol.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/grass/green.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/grass/semi-dry.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/grass/dry-symbol.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/grass/dry.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/grass/leaf-litter.png
+                            #    ## Roads ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/flat/dirt-dark.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/flat/dirt.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/flat/desert-road.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/flat/road.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/flat/road-clean.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/flat/sandy-path.png
+                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/flat/stone-path.png
+                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/flat/road-icy.png
+                                    #    ## Frozen ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/frozen/ice.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/frozen/snow.png
+            #    ## Desert ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/sand/desert.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/sand/beach.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/sand/desert-oasis.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/misc/rubble-tile.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/sand/crater.png
+                        #    ## Embellishments ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/flowers-mixed.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/farm-veg-spring-icon.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/stones-small7.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/snowbits-small4.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/mushroom.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/mushroom-farm-small.png
+                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/plants/desert-bones.png
+                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/plants/desert-plant8.png
+                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/misc/windmill-embellishment-tile.png
+                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/misc/fire-A01.png
+                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/stone/flames/flames-tile.png
+                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/misc/brazier-embellishment.png
+                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/misc/brazier-A01.png
+                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/fence-se-nw-01.png
+                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/fence-iron-tile.png
+                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/fence-palisade-tile.png
+                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/rocks.png
+                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/water-lilies-tile.png
+                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/water-lilies-flower-tile.png
+                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/embellishments/seashells-tile.png
+                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/misc/detritus/trashC-1.png
+                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/misc/detritus/detritusC-1.png
+                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/windows/dark-stone-tile.png
+                                                                                                        #    ## Forests ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/great-tree-tile.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/great-tree-snowy-tile.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/great-tree-dead-tile.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/great-oak-tree-dead-tile.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/tropical/jungle-tile.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/tropical/rainforest-tile.png
+                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/tropical/palm-desert-tile.png
+                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/tropical/palms-tile.png
+                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/tropical/savanna-tile.png
+                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/pine-tile.png
+                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/snow-forest-tile.png
+                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/deciduous-summer-tile.png
+                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/deciduous-fall-tile.png
+                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/deciduous-winter-tile.png
+                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/deciduous-winter-snow-tile.png
+                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/mixed-summer-tile.png
+                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/mixed-fall-tile.png
+                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/mixed-winter-tile.png
+                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/mixed-winter-snow-tile.png
+                                                                                #    ## Hills ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/hills/regular.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/hills/dry.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/hills/desert.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/hills/snow.png
+                    #    ## Mountain ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/mountains/basic-tile.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/mountains/dry-tile.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/mountains/snow-tile.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/desert_mountains/desert-tile.png
+                    #    ## Interior ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/stone-regular.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/stone-ancient.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/royal-rug/rug-tile.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/regular-rug/rug-tile.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/cave-rug/rug-tile.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/wood-regular.png
+                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/wood-ruined.png
+                                #    ## Underground ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/cave/beam-tile.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/cave/floor6.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/cave/earthy-floor3.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/cave/flagstones-dark.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/cave/path.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/mushrooms-tile.png
+                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/mushrooms-beam-tile.png
+                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/mushrooms-tile.png
+                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/mushrooms-beam-tile.png
+                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/mushroom-base.png
+                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/cave/hills-variation.png
+                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/cave/earthy-hills-variation.png
+                                                    #    ## Mine rail tracks ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/misc/rails-n-s.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/misc/rails-ne-sw.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/misc/rails-se-nw.png
+                #    ## Raised/Lowered terrain  ##
+    #    ## visual overlay - higher ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/elevation/bluffs-tile.png
+        #    ## visual overlay - lower ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/elevation/regular-tile.png
+        #    ## Unwalkable ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/elevation/obstacle-tile.png
+        #    ## Forest Bluffs/Gulches ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/pine-tile.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/elevation/bluff-forest-tile.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/forest/pine-tile.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/elevation/gulch-forest-tile.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/chasm/depths.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/chasm/regular-tile.png
+                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/chasm/depths.png
+                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/chasm/earthy-tile.png
+                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/chasm/abyss.png
+                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/chasm/abyss-tile.png
+                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/unwalkable/lava-tile.png
+                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/unwalkable/lava-chasm-tile.png
+                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/unwalkable/lava-tile.png
+                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/unwalkable/lava-tile.png
+                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/mountains/volcano-tile.png
+                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/mountains/volcano-tile.png
+                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/mountains/cloud-tile.png
+                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/mountains/cloud-desert-tile.png
+                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/mountains/cloud-snow-tile.png
+                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/desert_mountains/cloud-desert-tile.png
+                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/cave/wall-rough-tile.png
+                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/wall-mine-tile.png
+                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/cave/earthy-wall-rough-tile.png
+                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/rubble/wall-rough-tile.png
+                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/hedge/wall-hedge-tile.png
+                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/stone/wall-stone-tile.png
+                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/stone/wall-stone-lit-tile.png
+                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/stone/wall-stone-mine-tile.png
+                                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/stone/wall-stone-white-tile.png
+                                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/stone/clean/wall-stone-tile.png
+                                                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/stone/ancient/wall-stone-tile.png
+                                                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/stone/catacombs/wall-stone-tile.png
+                                                                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/stone/overgrown/wall-stone-tile.png
+                                                                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/stone/damaged/wall-stone-tile.png
+                                                                                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/walls/stone/ruins/wall-stone-tile.png
+                                                                                                                                                                                                            #    ## Doors and gates ##
+    #    ## Closed ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/portals/gate-rusty-sw-tile.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/portals/gate-rusty-se-tile.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/portals/gate-rusty-n-tile.png
+                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/portals/door-wooden-sw-tile.png
+                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/portals/door-wooden-se-tile.png
+                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/portals/door-wooden-n-tile.png
+                                                    #    ## Open ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/portals/gate-rusty-open-sw-tile.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/portals/gate-rusty-open-se-tile.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/portals/gate-rusty-open-n-tile.png
+                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/portals/door-wooden-open-sw-tile.png
+                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/portals/door-wooden-open-se-tile.png
+                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/portals/door-wooden-open-n-tile.png
+                                                    #    ## Invisible obstacle overlays ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/impassable-editor.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/unwalkable-editor.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void-editor.png
+                    #    ## Desert
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/desert-tile.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/desert-ruin-tile.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/desert-camp-tile.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/camp-tile.png
+                    #    ## Orcish
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/orc-tile.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/orc-snow-tile.png
+            #    ## Elven
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/elven-snow-tile.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/elven-tile.png
+            #    ## Human
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/human-tile.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/snow-tile.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/human-cottage-ruin-tile.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/human-city-tile.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/misc/windmill-tile.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/human-city-snow-tile.png
+                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/human-city-ruin-tile.png
+                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/human-hills-tile.png
+                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/human-snow-hills-tile.png
+                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/human-hills-ruin-tile.png
+                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/tropical-tile.png
+                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/drake-tile.png
+                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/drake-snow-tile.png
+                                                        #    ## Underground
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/cave-tile.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/dwarven-tile.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/hut-tile.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/hut-snow-tile.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/log-cabin-tile.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/log-cabin-snow-tile.png
+                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/igloo-tile.png
+                                #    ## Water Village
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/swampwater-tile.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/coast-tile.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/fog/fog1.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/village/village-overlay-editor.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/encampment/regular-tile.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/encampment-ruin/regular-tile.png
+                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/encampment/snow-tile.png
+                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/orcish/tile.png
+                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/winter-orcish/tile.png
+                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/castle-tile.png
+                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/snowy/castle-tile.png
+                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/elven/tile.png
+                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/elven-ruin/tile.png
+                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/winter-elven/tile.png
+                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/dwarven-castle-tile.png
+                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/outside-dwarven/dwarven-castle-tile.png
+                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/ruin-dwarven/dwarven-castle-tile.png
+                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/winter-dwarven/dwarven-castle-tile.png
+                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/ruin-tile.png
+                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/sunken-ruin-tile.png
+                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/swamp-ruin-tile.png
+                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/sand/tile.png
+                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/sand/ruin-tile.png
+                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/troll/tile.png
+                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/aquatic-camp/tile.png
+                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/aquatic-castle/castle-tile.png
+                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/encampment/regular-keep-tile.png
+                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/encampment-ruin/regular-keep-tile.png
+                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/encampment/tall-keep-tile.png
+                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/encampment/snow-keep-tile.png
+                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/orcish/keep-tile.png
+                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/winter-orcish/keep-tile.png
+                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/keep-tile.png
+                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/snowy/keep-tile.png
+                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/elven/keep-tile.png
+                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/elven-ruin/keep-tile.png
+                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/winter-elven/keep-tile.png
+                                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/dwarven-keep-tile.png
+                                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/outside-dwarven/dwarven-keep-tile.png
+                                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/ruin-dwarven/dwarven-keep-tile.png
+                                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/winter-dwarven/dwarven-keep-tile.png
+                                                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/ruined-keep-tile.png
+                                                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/sunken-keep-tile.png
+                                                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/swamp-keep-tile.png
+                                                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/sand/keep-tile.png
+                                                                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/sand/ruin-keep-tile.png
+                                                                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/aquatic-camp/keep-tile.png
+                                                                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/troll/keep-tile.png
+                                                                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/aquatic-castle/keep-tile.png
+                                                                                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/fog/fog1.png
+                                                                                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/castle-overlay-editor.png
+                                                                                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/fog/fog1.png
+                                                                                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/castle/keep-overlay-editor.png
+                                                                                                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/wood-n-s.png
+                                                                                                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/wood-ne-sw.png
+                                                                                                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/wood-se-nw.png
+                                                                                                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/wood-rotting-n-s.png
+                                                                                                                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/wood-rotting-ne-sw.png
+                                                                                                                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/wood-rotting-se-nw.png
+                                                                                                                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/stonebridge-n-s-tile.png
+                                                                                                                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/stonebridge-se-nw-tile.png
+                                                                                                                                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/stonebridge-ne-sw-tile.png
+                                                                                                                                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/snow/stonebridge-n-s-tile.png
+                                                                                                                                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/snow/stonebridge-se-nw-tile.png
+                                                                                                                                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/snow/stonebridge-ne-sw-tile.png
+                                                                                                                                                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/cave/chasm-stone-bridge-s-n-tile.png
+                                                                                                                                                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/cave/chasm-stone-bridge-sw-ne-tile.png
+                                                                                                                                                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/cave/chasm-stone-bridge-se-nw-tile.png
+                                                                                                                                                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/hanging-se-nw-tile.png
+                                                                                                                                                                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/hanging-sw-ne-tile.png
+                                                                                                                                                                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/hanging-s-n-tile.png
+                                                                                                                                                                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/chasm-se-nw-tile.png
+                                                                                                                                                                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/chasm-sw-ne-tile.png
+                                                                                                                                                                                                                                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/chasm-s-n-tile.png
+                                                                                                                                                                                                                                                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/planks-se-nw-tile.png
+                                                                                                                                                                                                                                                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/planks-sw-ne-tile.png
+                                                                                                                                                                                                                                                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/bridge/planks-s-n.png
+                                                                                                                                                                                                                                                                                                                        #    ## Special ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/floodfill/marker-high-tile.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/floodfill/marker-high-2-tile.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/floodfill/marker-low-tile.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/floodfill/marker-low-2-tile.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/off-map/symbol.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/off-map/offmap-editor.png
+                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/off-map/border.png
+                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/off-map/border-editor.png
+                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/off-map/symbol.png
+                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/color-hex.png
+                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/shroud-editor.png
+                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/void.png
+                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/void/shroud-editor.png
+                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/fog/fog1.png
+                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/fog/fog-editor.png
+                                                                    #    ## Terrain Archetypes ##
+    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_fungus.png
+        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_cave.png
+            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_sand.png
+                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_reef.png
+                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_hills.png
+                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_swamp_water.png
+                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_shallow_water.png
+                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_castle.png
+                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_mountains.png
+                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_deep_water.png
+                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_flat.png
+                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_forest.png
+                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_frozen.png
+                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_village.png
+                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_impassable.png
+                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_unwalkable.png
+                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/symbols/terrain_type_rails.png
+                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/stone-regular.png
+                                                                            https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/stone-ancient.png
+                                                                                https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/royal-rug/rug-tile.png
+                                                                                    https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/regular-rug/rug-tile.png
+                                                                                        https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/wood-ruined.png
+
+                                                                                            ];
 
     const mainCanvas = document.getElementById('mainCanvas');
     const mainCtx = mainCanvas.getContext('2d');
@@ -89,13 +417,13 @@
         const container = document.getElementById('tilesContainer');
         container.innerHTML = ''; // Clear existing tiles
         
-        tilesData.forEach(tileData => {
+        tilesData.forEach((src, index) => {
             const img = document.createElement('img');
-            img.src = tileData.src;
-            img.alt = tileData.alt;
-            img.id = tileData.id;
+            img.src = src;
+            img.alt = `tile${index + 1}`;
+            img.id = `tile${index + 1}`;
             img.className = 'tile-option';
-            img.title = tileData.name;
+            img.title = `Tile ${index + 1}`;
             container.appendChild(img);
         });
     }
@@ -219,8 +547,8 @@
 
         const baseSize = 72;
         const size = baseSize * scale;
-        const dx = size * 0.75;
-        const dy = size * 0.866;
+        const dx = size * 0.75 - 1;
+        const dy = size * 0.866 - 1;
 
         const cols = Math.ceil(mainCanvas.width / dx) + 4;
         const rows = Math.ceil(mainCanvas.height / dy) + 4;
@@ -243,7 +571,7 @@
                     mainCtx.restore();
                 } else {
                     // Only draw border for empty hexagons
-                    mainCtx.lineWidth = 5;
+                    mainCtx.lineWidth = 0.15;
                     mainCtx.strokeStyle = 'gray';
                     mainCtx.stroke();
                 }
@@ -272,8 +600,8 @@
 
         const baseSize = 72;
         const size = baseSize * scale;
-        const dx = size * 0.75;
-        const dy = size * 0.866;
+        const dx = size * 0.75 - 1;
+        const dy = size * 0.866 - 1;
 
         const cols = Math.ceil(mainCanvas.width / dx) + 4;
         const rows = Math.ceil(mainCanvas.height / dy) + 4;
