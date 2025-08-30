@@ -470,16 +470,22 @@
         mainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
         const rect = sideMenu.getBoundingClientRect();
+        // Use scrollHeight to get full height including scrollable content
+        const fullHeight = Math.max(rect.height, sideMenu.scrollHeight);
+        
         menuCanvas.width = rect.width * dpr;
-        menuCanvas.height = rect.height * dpr;
+        menuCanvas.height = fullHeight * dpr;
         menuCanvas.style.width = rect.width + 'px';
-        menuCanvas.style.height = rect.height + 'px';
+        menuCanvas.style.height = fullHeight + 'px';
         menuCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
         draw();
     }
 
     window.addEventListener('resize', resizeCanvas);
+    
+    // Update canvas when menu is scrolled
+    sideMenu.addEventListener('scroll', draw);
     
     // Initialize tiles and setup
     function initializeTiles() {
@@ -582,7 +588,7 @@
             const rect = selectedTile.getBoundingClientRect();
             const menuRect = sideMenu.getBoundingClientRect();
             const tileCx = rect.left - menuRect.left + rect.width / 2;
-            const tileCy = rect.top - menuRect.top + rect.height / 2;
+            const tileCy = (rect.top - menuRect.top) + sideMenu.scrollTop + rect.height / 2;
             drawHexAt(menuCtx, tileCx, tileCy, baseSize);
             menuCtx.lineWidth = 4;
             menuCtx.strokeStyle = 'lime';
