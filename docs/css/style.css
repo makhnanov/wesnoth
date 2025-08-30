@@ -26,9 +26,10 @@
 
 #sideMenu {
     position: absolute;
-    top: 60px;
+    top: 20px;
     left: -250px;
-    width: 290px;
+    width: 300px;
+    max-height: calc(100vh - 40px);
     background: #111;
     color: white;
     transition: all 0.6s ease;
@@ -39,6 +40,8 @@
     opacity: 0;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #sideMenu.open {
@@ -74,4 +77,19 @@
 .tile-option.selected {
     box-shadow: 0 0 0 4px lime;
     opacity: 1;
+}
+
+#tilesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    /*max-height: calc(100vh - 120px);*/
+}
+
+#tilesContainer::-webkit-scrollbar {
+    display: none;
 }
