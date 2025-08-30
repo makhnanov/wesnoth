@@ -335,12 +335,33 @@
 
     mainCanvas.addEventListener('wheel', (e) => {
         e.preventDefault();
-        if (e.deltaY < 0) scale *= 1.01;
-        else scale /= 1.01;
+
+        // координаты курсора в системе canvas
+        const rect = mainCanvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        // мировые координаты до изменения масштаба
+        const worldXBefore = (mouseX - offsetX) / scale;
+        const worldYBefore = (mouseY - offsetY) / scale;
+
+        // применяем масштаб
+        const zoomFactor = e.deltaY < 0 ? 1.01 : 0.99;
+        scale *= zoomFactor;
         scale = Math.min(Math.max(scale, 0.3), 3.0);
+
+        // мировые координаты после изменения масштаба
+        const worldXAfter = (mouseX - offsetX) / scale;
+        const worldYAfter = (mouseY - offsetY) / scale;
+
+        // сдвигаем так, чтобы курсор "смотрел" на ту же точку
+        offsetX += (worldXAfter - worldXBefore) * scale;
+        offsetY += (worldYAfter - worldYBefore) * scale;
+
         draw();
         showZoomIndicator();
     }, {passive: false});
+
 
     draw();
 </script>
