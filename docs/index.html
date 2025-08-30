@@ -241,11 +241,12 @@
                     mainCtx.clip();
                     mainCtx.drawImage(placedTiles[key], cx - size / 2, cy - size / 2, size, size);
                     mainCtx.restore();
+                } else {
+                    // Only draw border for empty hexagons
+                    mainCtx.lineWidth = 5;
+                    mainCtx.strokeStyle = 'gray';
+                    mainCtx.stroke();
                 }
-
-                mainCtx.lineWidth = 0.15;
-                mainCtx.strokeStyle = 'gray';
-                mainCtx.stroke();
             }
         }
 
