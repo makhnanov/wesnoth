@@ -13,17 +13,52 @@
 <div id="sideMenu" class="open">
     <canvas id="menuCanvas"></canvas>
     <h3 class="tile-header">Tiles:</h3>
-    <img src="https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/flat/road.png" alt="road"
-         id="tile1" class="tile-option">
-    <img src="https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/swamp/water-tile.png" alt="water"
-         id="tile2" class="tile-option">
-    <img src="https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/stone-regular.png" alt="stone"
-         id="tile3" class="tile-option">
+    <div id="tilesContainer"></div>
 </div>
 <canvas id="mainCanvas"></canvas>
 <div id="zoomIndicator"></div>
 
 <script>
+    // Tile configuration data
+    const tilesData = [
+        {
+            id: "tile1",
+            src: "https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/flat/road.png",
+            alt: "road",
+            name: "Road"
+        },
+        {
+            id: "tile2", 
+            src: "https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/swamp/water-tile.png",
+            alt: "water",
+            name: "Water"
+        },
+        {
+            id: "tile3",
+            src: "https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/interior/stone-regular.png",
+            alt: "stone", 
+            name: "Stone"
+        },
+        {
+            id: "tile4",
+            src: "https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/ocean-tile.png",
+            alt: "water-ocean",
+            name: "Water Ocean"
+        },
+        {
+            id: "tile4",
+            src: "https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/coast-tile.png",
+            alt: "water-ocean",
+            name: "Water Ocean"
+        },
+        {
+            id: "tile5",
+            src: "https://raw.githubusercontent.com/wesnoth/wesnoth/refs/heads/master/data/core/images/terrain/water/reef-tile.png",
+            alt: "water",
+            name: "Water Reef"
+        },
+    ];
+
     const mainCanvas = document.getElementById('mainCanvas');
     const mainCtx = mainCanvas.getContext('2d');
 
@@ -48,6 +83,22 @@
     // History system for undo functionality
     let history = [];
     const MAX_HISTORY = 100;
+
+    // Function to create tiles dynamically from JSON data
+    function createTiles() {
+        const container = document.getElementById('tilesContainer');
+        container.innerHTML = ''; // Clear existing tiles
+        
+        tilesData.forEach(tileData => {
+            const img = document.createElement('img');
+            img.src = tileData.src;
+            img.alt = tileData.alt;
+            img.id = tileData.id;
+            img.className = 'tile-option';
+            img.title = tileData.name;
+            container.appendChild(img);
+        });
+    }
 
     function saveState() {
         // Create a serializable copy by storing tile IDs
@@ -102,35 +153,43 @@
     }
 
     window.addEventListener('resize', resizeCanvas);
+    
+    // Initialize tiles and setup
+    function initializeTiles() {
+        createTiles();
+        
+        // Add event listeners to dynamically created tiles
+        const tiles = document.querySelectorAll('.tile-option');
+        tiles.forEach(tile => {
+            tile.addEventListener('click', () => {
+                if (selectedTile === tile) {
+                    // Deselect if clicking the already selected tile
+                    tiles.forEach(t => t.classList.remove('selected'));
+                    selectedTile = null;
+                } else {
+                    // Select the new tile
+                    tiles.forEach(t => t.classList.remove('selected'));
+                    tile.classList.add('selected');
+                    selectedTile = tile;
+                }
+                draw();
+            });
+        });
+
+        // Select 3rd tile by default
+        const defaultTile = document.getElementById('tile3');
+        if (defaultTile) {
+            defaultTile.classList.add('selected');
+            selectedTile = defaultTile;
+        }
+    }
+    
+    initializeTiles();
     resizeCanvas();
 
     menuButton.addEventListener('click', () => {
         sideMenu.classList.toggle('open');
         resizeCanvas();
-    });
-
-    // Select 3rd tile by default
-    const defaultTile = document.getElementById('tile3');
-    if (defaultTile) {
-        defaultTile.classList.add('selected');
-        selectedTile = defaultTile;
-    }
-
-    const tiles = document.querySelectorAll('.tile-option');
-    tiles.forEach(tile => {
-        tile.addEventListener('click', () => {
-            if (selectedTile === tile) {
-                // Deselect if clicking the already selected tile
-                tiles.forEach(t => t.classList.remove('selected'));
-                selectedTile = null;
-            } else {
-                // Select the new tile
-                tiles.forEach(t => t.classList.remove('selected'));
-                tile.classList.add('selected');
-                selectedTile = tile;
-            }
-            draw();
-        });
     });
 
     function drawHexAt(ctx, cx, cy, size) {
