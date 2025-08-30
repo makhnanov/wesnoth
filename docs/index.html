@@ -207,6 +207,13 @@
         resizeCanvas();
     });
 
+    // Select 3rd tile by default
+    const defaultTile = document.getElementById('tile3');
+    if (defaultTile) {
+        defaultTile.classList.add('selected');
+        selectedTile = defaultTile;
+    }
+
     const tiles = document.querySelectorAll('.tile-option');
     tiles.forEach(tile => {
         tile.addEventListener('click', () => {
