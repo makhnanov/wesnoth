@@ -28,7 +28,7 @@
     position: absolute;
     top: 20px;
     left: -250px;
-    width: 300px;
+    width: 284px;
     max-height: calc(100vh - 40px);
     background: #111;
     color: white;
@@ -88,7 +88,8 @@
 #tilesContainer {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    row-gap: 0;
+    column-gap: 10px;
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: none;
